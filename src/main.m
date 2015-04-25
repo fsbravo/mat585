@@ -10,14 +10,15 @@ n = size(imgs,3);
 %%% permute images
 P = eye(n); P = P(randperm(n),:);
 idx = 1:n;
-idx_oo = idx * P;
+idx_oo = idx * P;       % takes 1:n to idx_oo
+idx_rv = idx * P';      % takes idx_oo to 1:n
 imgs_oo = imgs(:,:,idx_oo);
 
 %%% calculate image affinities
 A = gaussian_kernel_weights(imgs_oo);
 
 %%% get pairwise comparison
-W = pairwise_comparisons(alpha,beta,P);
+W = pairwise_comparisons(alpha,beta,idx_oo);
 
 %%% 1. (vector) diffusion maps
 
