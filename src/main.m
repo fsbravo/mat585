@@ -4,7 +4,9 @@ alpha   = 0.01;       % fraction of pairwise comparisons
 beta    = 0.90;       % probability of correct pairwise comparisons
 
 %%% get images
-% call zebrafish_reader.m
+imgs = image_reader('zebrafish',120);
+%%% convert the uint8 pixels to doubles
+imgs = double(imgs);
 n = size(imgs,3);
 
 %%% permute images
@@ -18,7 +20,7 @@ imgs_oo = imgs(:,:,idx_oo);
 A = gaussian_kernel_weights(imgs_oo);
 
 %%% get pairwise comparison
-W = pairwise_comparisons(alpha,beta,idx_oo);
+W = pairwise_comparisons(alpha,beta,idx_oo,P);
 
 %%% 1. (vector) diffusion maps
 

@@ -3,7 +3,7 @@
 %   beta  :: probability of pairwise comparison being correct
 %   P     :: permutation matrix from idx --> idx_oo
 
-function [W_oo] = pairwise_comparisons(alpha,beta,idx_oo)
+function [W_oo] = pairwise_comparisons(alpha,beta,idx_oo,P)
 
     n = size(P,1);
     % 1 if we get this pairwise comparison, 0 otherwise
