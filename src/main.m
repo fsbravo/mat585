@@ -4,9 +4,12 @@ alpha   = 0.01;       % fraction of pairwise comparisons
 beta    = 0.90;       % probability of correct pairwise comparisons
 
 %%% get images
-imgs = image_reader('zebrafish',120);
+range = 120;
+imgs = image_reader('zebrafish',range);
 %%% convert the uint8 pixels to doubles
 imgs = double(imgs);
+
+%%% number of images, should equal range
 n = size(imgs,3);
 
 %%% permute images
@@ -18,13 +21,30 @@ imgs_oo = imgs(:,:,idx_oo);
 
 %%% calculate image affinities
 A = gaussian_kernel_weights(imgs_oo);
+%%% matrix of degrees: (completely connected)
+D = diag(n*ones(n,1));
 
 %%% get pairwise comparison
 W = pairwise_comparisons(alpha,beta,idx_oo,P);
 
 %%% 1. (vector) diffusion maps
+[V,E] = eig(A);
+[E order] = sort(diag(E),'descend');  % sort eigenvalues in descending order
+V = V(:,order);
+%Discard the first eiegenvector of all one's
+V = V(:,2:n);
+E= E(2:n);
+
+t=10; %how do we define this?
+
+%R1 embeddding
+x_pos = E(1).^t*sqrt(inv(D(2,2)))*V(:,1);
+%R2 embedding
+y_pos = E(2).^t*sqrt(inv(D(3,3)))*V(:,2);
+plot(x_pos,y_pos,'-o')
 
 %%% 2. ranking + pairwise comparisons
+
 
 %%% 3. ranking + pairwise comparisons + time stamps 
 
