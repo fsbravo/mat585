@@ -1,7 +1,6 @@
 %%% calculate affinity between each pair of images using a gaussian kernel
 
 function [A] = gaussian_kernel_weights(imgs)
-
     n = size(imgs,3);
     A = zeros(n);
     for i=1:n
@@ -13,7 +12,6 @@ function [A] = gaussian_kernel_weights(imgs)
             average_norm = (norm(img_i(:))^2 + norm(img_j(:))^2)/2;
             A(i,j) = exp(-difference/average_norm);
         end
-    end
+    end   
     A = A + triu(A,1)';
-    
 end
