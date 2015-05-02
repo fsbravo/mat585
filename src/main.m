@@ -20,30 +20,22 @@ idx_rv = idx * P';      % takes idx_oo to 1:n
 imgs_oo = imgs(:,:,idx_oo);
 
 %%% calculate image affinities (weights)
-A = gaussian_kernel_weights(imgs_oo);
+A = gaussian_kernel_weights(imgs);
 %%% matrix of degrees: (completely connected)
 D = diag(sum(A));
-L = inv(D)*A; 
 
 %%% get pairwise comparison
 W = pairwise_comparisons(alpha,beta,idx_oo,P);
 
 %%% 1. (vector) diffusion maps
-[V,E] = eig(L);
-[E order] = sort(diag(E),'descend');  % sort eigenvalues in descending order
-V = V(:,order);
-%Discard the first eiegenvector of all one's
-V = V(:,2:n);
-E= E(2:n);
-
-t=2; %how do we define this?
-
+t=1; %how do we define this?
+diff_map = full_diffusion_map(A,t);
+x_pos = diff_map(:,1);
+y_pos = diff_map(:,2);
 %R1 embeddding
-x_pos = E(1).^t*sqrt(inv(D(2,2)))*V(:,1);
 figure;
 plot(x_pos,zeros(1,n),'-o');
 %R2 embedding
-y_pos = E(2).^t*sqrt(inv(D(3,3)))*V(:,2);
 figure;
 plot(x_pos,y_pos,'-o')
 
