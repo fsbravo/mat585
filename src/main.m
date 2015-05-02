@@ -1,7 +1,7 @@
 clear; clc;
 %%% parameters
-alpha   = 0.01;       % fraction of pairwise comparisons
-beta    = 0.90;       % probability of correct pairwise comparisons
+alpha   = 1.00;       % fraction of pairwise comparisons
+beta    = 1.00;       % probability of correct pairwise comparisons
 
 %%% get images
 range = 120;
@@ -20,16 +20,16 @@ idx_rv = idx * P';      % takes idx_oo to 1:n
 imgs_oo = imgs(:,:,idx_oo);
 
 %%% calculate image affinities (weights)
-A = gaussian_kernel_weights(imgs);
+W = gaussian_kernel_weights(imgs);
 %%% matrix of degrees: (completely connected)
-D = diag(sum(A));
+D = diag(sum(W));
 
 %%% get pairwise comparison
-W = pairwise_comparisons(alpha,beta,idx_oo,P);
+T = pairwise_comparisons(alpha,beta,idx,P);
 
 %%% 1. (vector) diffusion maps
 t=1; %how do we define this?
-diff_map = full_diffusion_map(A,t);
+diff_map = full_diffusion_map(W,t);
 x_pos = diff_map(:,1);
 y_pos = diff_map(:,2);
 %R1 embeddding
@@ -40,7 +40,7 @@ figure;
 plot(x_pos,y_pos,'-o')
 
 %%% 2. ranking + pairwise comparisons
-
+order_2 = get_ranking_base(W,T);
 
 %%% 3. ranking + pairwise comparisons + time stamps 
 
