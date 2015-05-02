@@ -7,9 +7,9 @@ function [W] = gaussian_kernel_weights(imgs)
         img_i = imgs(:,:,i);
         for j=i:n
             img_j = imgs(:,:,j);
-            distances(i,j) = norm(img_i(:)-img_j(:))^2;  %this is on the order of 1e6
+            distances(i,j) = norm(img_i(:)-img_j(:));  %this is on the order of 1e6
         end
     end
     distances = distances + triu(distances,1)';
-    W = exp(-distances./median(distances(:)));
+    W = exp(-(distances./median(distances(:)))^2);
 end
