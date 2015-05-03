@@ -40,15 +40,22 @@ diff_map = full_diffusion_map(W,t);
 x_pos = diff_map(:,1);
 y_pos = diff_map(:,2);
 %R1 embeddding
-figure;
+figure(1);
 plot(x_pos,zeros(1,n),'-o');
+title('Diffusion map embedding in \bf{R}^1','Interpreter','tex');
 %R2 embedding
-figure;
+figure(2);
 plot(x_pos,y_pos,'-o')
+title('Diffusion map embedding in \bf{R}^2','Interpreter','tex');
+
 %Check sort quality
-figure;
+figure(3);
 [x_sorted, ord] = sort(x_pos);
 scatter(ord,1:120);
+title('Quality of ranking');
+xlabel('Diffusion map rank');
+ylabel('True image rank');
+
 
 %%% 2. ranking + pairwise comparisons
 n_imgs = 10;
