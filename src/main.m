@@ -8,6 +8,12 @@ range = 120;
 imgs = image_reader('zebrafish',range);
 %%% convert the uint8 pixels to doubles
 imgs = double(imgs);
+imgs_mat = zeros(size(imgs,1)*size(imgs,2),range);
+for i=1:range
+    img = imgs(:,:,i);
+    imgs_mat(:,i) = img(:);
+end
+clear img;
 
 %%% number of images, should equal range
 n = size(imgs,3);
@@ -18,10 +24,11 @@ idx = 1:n;
 idx_oo = idx * P;       % takes 1:n to idx_oo
 idx_rv = idx * P';      % takes idx_oo to 1:n
 imgs_oo = imgs(:,:,idx_oo);
+imgs_mat_oo = imgs(:,idx_oo);
 
 %%% calculate image affinities (weights)
-W = gaussian_kernel_weights(imgs);
-%%% matrix of degrees: (completely connected)
+[W,distances]= gaussian_kernel_weights(imgs_mat,0.25);
+%%% matrix of degrees
 D = diag(sum(W));
 
 %%% get pairwise comparison
@@ -38,9 +45,12 @@ plot(x_pos,zeros(1,n),'-o');
 %R2 embedding
 figure;
 plot(x_pos,y_pos,'-o')
+%Check sort quality
+figure;
+[x_sorted, ord] = sort(x_pos);
+scatter(ord,1:120);
 
 %%% 2. ranking + pairwise comparisons
-order_2 = get_ranking_base(W,T);
 
 %%% 3. ranking + pairwise comparisons + time stamps 
 
