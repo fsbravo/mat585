@@ -1,6 +1,6 @@
 clear; clc;
 %%% parameters
-alpha   = 1.00;       % fraction of pairwise comparisons
+alpha   = 0.50;       % fraction of pairwise comparisons
 beta    = 1.00;       % probability of correct pairwise comparisons
 
 %%% get images
@@ -51,6 +51,10 @@ figure;
 scatter(ord,1:120);
 
 %%% 2. ranking + pairwise comparisons
+n_imgs = 10;
+start = 1;
+idx = start:start+n_imgs-1;
+[t,D] = get_ranking_base(W(idx,idx),T(idx,idx))
 
 %%% 3. ranking + pairwise comparisons + time stamps 
 
