@@ -1,15 +1,17 @@
-function [t,D] = get_ranking_base(W,T)
-
+function [t,d] = get_ranking_base(W,T,lambda)
+D = diag(sum(W,2));
+L = D-W;
 n = size(W,1);
 
 cvx_begin
     cvx_solver mosek
     cvx_precision low
     variable t(n,1)
-    variable D(n,n)
-    minimize( ranking_obj(t,D,T,W) );
+    variable d(n,n)
+    minimize( ranking_obj(t,d,T,L,lambda) );
     subject to
-        D(:)>=1
+        d(:)>=1
+        t'*ones(n,1) == 0
 cvx_end
 
 end

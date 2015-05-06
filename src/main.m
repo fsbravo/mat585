@@ -1,6 +1,6 @@
 clear; clc;
 %%% parameters
-alpha   = 0.50;       % fraction of pairwise comparisons
+alpha   = 0.05;       % fraction of pairwise comparisons
 beta    = 1.00;       % probability of correct pairwise comparisons
 
 %%% get images
@@ -51,17 +51,18 @@ title('Diffusion map embedding in \bf{R}^2','Interpreter','tex');
 %Check sort quality
 figure(3);
 [x_sorted, ord] = sort(x_pos);
-scatter(ord,1:120);
+scatter(ord,1:range);
 title('Quality of ranking');
 xlabel('Diffusion map rank');
 ylabel('True image rank');
+sum(abs(ord-1:range))
 
 
 %%% 2. ranking + pairwise comparisons
-n_imgs = 10;
-start = 1;
-idx = start:start+n_imgs-1;
-[t,D] = get_ranking_base(W(idx,idx),T(idx,idx))
+[t,D] = get_ranking_base(W,T,1);
+[x_sorted, ord] = sort(t); hold on;
+scatter(ord,1:range);
+sum(abs(ord-1:range))
 
 %%% 3. ranking + pairwise comparisons + time stamps 
 

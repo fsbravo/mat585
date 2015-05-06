@@ -1,10 +1,10 @@
-function [val] = ranking_obj(t,D,T,W)
+function [val] = ranking_obj(t,d,T,L,lambda)
     n = length(t);
-    val = 0;
-    lambda = 1;
-    for i=1:n
-        for j=1:n
-            val = val + abs(t(i)-t(j))*W(i,j) + lambda*abs(t(j)-t(i)-D(i,j)*T(i,j));
-        end
+    val = t'*L*t;
+    [ii,jj,~] = find(T);
+    for idx=1:length(ii)
+        i = ii(idx);
+        j = jj(idx);
+        val = val + lambda*abs(t(j)-t(i)-d(i,j)*T(i,j));
     end
 end
