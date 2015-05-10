@@ -5,18 +5,19 @@ beta    = 1.00;       % probability of correct pairwise comparisons
 
 %%% get images
 range = 30;
-imgs = image_reader('zebrafish',range);
+[imgs, nchannels] = image_reader('drosophila_fixed',range);
 %%% convert the uint8 pixels to doubles
 imgs = double(imgs);
-imgs_mat = zeros(size(imgs,1)*size(imgs,2),range);
+imgs_mat = zeros(size(imgs,1)*size(imgs,2)*nchannels,range);
 for i=1:range
-    img = imgs(:,:,i);
-    imgs_mat(:,i) = img(:);
+    img = imgs(:,:,:,i);
+    imgs_mat(:,i) = img(:); %vectorize images. not sure if this is 
+    % appropriate in RGB 3 channel case
 end
 clear img;
 
 %%% number of images, should equal range
-n = size(imgs,3);
+n = range; 
 
 %%% permute images
 P = eye(n); P = P(randperm(n),:);
