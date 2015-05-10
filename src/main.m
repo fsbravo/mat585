@@ -59,19 +59,39 @@ ylabel('True image rank');
 sum(abs(ord_x-[1:range]'))
 
 %%% 2. ranking + pairwise comparisons
-[t,D] = get_ranking_base(W,T,0.01);
-[t_sorted, ord_t] = sort(t); hold on;
-scatter(1:range,ord_t);
+figure(4);
+[t2,D2] = get_ranking_base(W,T,0.01);
+[~, ord_t2] = sort(t2); hold on;
+scatter(1:range,ord_t2);
 title('Quality of ranking');
-xlabel('Diffusion map rank');
+xlabel('dm+pairwise map rank');
 ylabel('True image rank');
-sum(abs(ord_t-[1:range]'))
+sum(abs(ord_t2-[1:range]'))
 
-%%% 3. ranking + pairwise comparisons + time stamps 
+%%% 3. ranking + pairwise comparisons + time stamps
+figure(5);
+t_hat = 1:range;
+t_hat = t_hat' - mean(t_hat);
+sigma = 1;
+t_hat = t_hat + sigma*normrnd(0,1,range,1);
+gamma = 1;
+[t3,D3] = get_ranking_base_time(W,T,t_hat,0.01,1);
+[~, ord_t3] = sort(t3); hold on;
+scatter(ord_t3,1:range);
+title('Quality of ranking');
+xlabel('dm+pairwise+time rank');
+ylabel('True image rank');
+sum(abs(ord_t3-[1:range]'))
 
 %%% 4. binary ranking method - formulate as linear program
-%Tb = T; Tb(Tb<0) = 0; 
-%[res,A,blc,buc] = get_ranking_binary(W,Tb,1);
+figure(6);
+Tb = T; Tb(Tb<0) = 0; 
+[res,ord_b] = get_ranking_binary(W,Tb,1);
+scatter(ord_b,1:range);
+title('Quality of ranking');
+xlabel('binary rank');
+ylabel('True image rank');
+sum(abs(ord_b-[1:range]))
 
 %%% 5. doubly stochastic relaxation
 

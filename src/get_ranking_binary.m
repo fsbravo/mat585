@@ -1,4 +1,4 @@
-function [sol,A,blc,buc] = get_ranking_binary(W,T,lambda)
+function [sol,order] = get_ranking_binary(W,T,lambda)
     n = size(W,1);
     
     %% DEFINE PROBLEM
@@ -54,8 +54,11 @@ function [sol,A,blc,buc] = get_ranking_binary(W,T,lambda)
     
     %% SOLVE
     res = msklpopt(c,A,blc,buc,blx,bux);
-    sol = res.sol;
     
     %% FIND RANKING ORDER
+    sol = reshape(res.sol.itr.xx(1:n^2),n,n);
+    gt = sol>=0.5;  % 1 if j>i
+    csums = sum(gt,1);
+    [~,order] = sort(csums);
     
 end
