@@ -1,11 +1,11 @@
 clear; clc;
 %%% parameters
-alpha   = 1.00;       % fraction of pairwise comparisons
+alpha   = 0.10;       % fraction of pairwise comparisons
 beta    = 1.00;       % probability of correct pairwise comparisons
 
 %%% get images
-range = 30;
-[imgs, nchannels] = image_reader('drosophila_fixed',range);
+range = 120;
+[imgs, nchannels] = image_reader('zebrafish',range);
 %%% convert the uint8 pixels to doubles
 imgs = double(imgs);
 imgs_mat = zeros(size(imgs,1)*size(imgs,2)*nchannels,range);
@@ -52,7 +52,7 @@ y_pos = diff_map(:,2);
 % check sort quality
 figure(3);
 [x_sorted, ord_x] = sort(x_pos);
-scatter(ord_x,1:range);
+scatter(1:range,ord_x);
 title('Quality of ranking');
 xlabel('Diffusion map rank');
 ylabel('True image rank');
@@ -61,14 +61,17 @@ sum(abs(ord_x-[1:range]'))
 %%% 2. ranking + pairwise comparisons
 [t,D] = get_ranking_base(W,T,0.01);
 [t_sorted, ord_t] = sort(t); hold on;
-scatter(ord_t,1:range);
+scatter(1:range,ord_t);
+title('Quality of ranking');
+xlabel('Diffusion map rank');
+ylabel('True image rank');
 sum(abs(ord_t-[1:range]'))
 
 %%% 3. ranking + pairwise comparisons + time stamps 
 
 %%% 4. binary ranking method - formulate as linear program
-Tb = T; Tb(Tb<0) = 0; 
-[res,A,blc,buc] = get_ranking_binary(W,Tb,1);
+%Tb = T; Tb(Tb<0) = 0; 
+%[res,A,blc,buc] = get_ranking_binary(W,Tb,1);
 
 %%% 5. doubly stochastic relaxation
 
