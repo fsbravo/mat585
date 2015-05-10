@@ -20,19 +20,19 @@ function [sol,A,blc,buc] = get_ranking_binary(W,T,lambda)
     end
     blc1 = ones(n_cons,1); buc1 = ones(n_cons,1);
     % 1<=t(i,j)+t(j,k)+t(k,i)<=2 :: n^3 constraints
-    n_cons = n^3;
-    A2 = zeros(n_cons,n_var);
+%     n_cons = n*(n-1)/2*;
+%     A2 = zeros(n_cons,n_var);
     l = 1;
     for i=1:n
-        for j=1:n
-            for k=1:n
+        for j=i+1:n
+            for k=j+1:n
             temp = sparse([i j k],[j k i],[1 1 1],n,n);
             A2(l,:) = [temp(:)' zeros(1,n_var-n^2)];
             l = l+1;
             end
         end
     end
-    blc2 = ones(n_cons,1); buc2 = 2*ones(n_cons,1);
+    blc2 = ones(size(A2,1),1); buc2 = 2*ones(size(A2,1),1);
     % tau(+)_ij-tau(-)_ij-t_ij=-t(hat)_ij :: sames as number of edges
     l = 1;
     [ii,jj,s] = find(T);
@@ -54,5 +54,8 @@ function [sol,A,blc,buc] = get_ranking_binary(W,T,lambda)
     
     %% SOLVE
     res = msklpopt(c,A,blc,buc,blx,bux);
-    sol = res;
+    sol = res.sol;
+    
+    %% FIND RANKING ORDER
+    
 end

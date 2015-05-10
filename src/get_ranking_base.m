@@ -10,8 +10,9 @@ cvx_begin
     variable d(n,n)
     minimize( ranking_obj(t,d,T,L,lambda) );
     subject to
-        d(:)>=1
-        t'*ones(n,1) == 0
+        d(:)>=1;
+        t'*ones(n,1) == 0;
+        t(n)-t(1) == n;
 cvx_end
 
 end

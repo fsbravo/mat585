@@ -1,10 +1,10 @@
 clear; clc;
 %%% parameters
-alpha   = 0.05;       % fraction of pairwise comparisons
+alpha   = 1.00;       % fraction of pairwise comparisons
 beta    = 1.00;       % probability of correct pairwise comparisons
 
 %%% get images
-range = 120;
+range = 30;
 imgs = image_reader('zebrafish',range);
 %%% convert the uint8 pixels to doubles
 imgs = double(imgs);
@@ -39,37 +39,40 @@ t=1; %how do we define this?
 diff_map = full_diffusion_map(W,t);
 x_pos = diff_map(:,1);
 y_pos = diff_map(:,2);
-%R1 embeddding
-figure(1);
-plot(x_pos,zeros(1,n),'-o');
-title('Diffusion map embedding in \bf{R}^1','Interpreter','tex');
-%R2 embedding
-figure(2);
-plot(x_pos,y_pos,'-o')
-title('Diffusion map embedding in \bf{R}^2','Interpreter','tex');
+% %R1 embeddding
+% figure(1);
+% plot(x_pos,zeros(1,n),'-o');
+% title('Diffusion map embedding in \bf{R}^1','Interpreter','tex');
+% %R2 embedding
+% figure(2);
+% plot(x_pos,y_pos,'-o')
+% title('Diffusion map embedding in \bf{R}^2','Interpreter','tex');
 
-%Check sort quality
+% check sort quality
 figure(3);
-[x_sorted, ord] = sort(x_pos);
-scatter(ord,1:range);
+[x_sorted, ord_x] = sort(x_pos);
+scatter(ord_x,1:range);
 title('Quality of ranking');
 xlabel('Diffusion map rank');
 ylabel('True image rank');
-sum(abs(ord-1:range))
-
+sum(abs(ord_x-[1:range]'))
 
 %%% 2. ranking + pairwise comparisons
-[t,D] = get_ranking_base(W,T,1);
-[x_sorted, ord] = sort(t); hold on;
-scatter(ord,1:range);
-sum(abs(ord-1:range))
+[t,D] = get_ranking_base(W,T,0.01);
+[t_sorted, ord_t] = sort(t); hold on;
+scatter(ord_t,1:range);
+sum(abs(ord_t-[1:range]'))
 
 %%% 3. ranking + pairwise comparisons + time stamps 
 
-%%% 4. doubly stochastic relaxation
+%%% 4. binary ranking method - formulate as linear program
+Tb = T; Tb(Tb<0) = 0; 
+[res,A,blc,buc] = get_ranking_binary(W,Tb,1);
 
-%%% 5. local nonconvex relaxation
+%%% 5. doubly stochastic relaxation
 
-%%% 6. spectral relaxation
+%%% 6. local nonconvex relaxation
 
-%%% 7. esdp relaxation
+%%% 7. spectral relaxation
+
+%%% 8. esdp relaxation
