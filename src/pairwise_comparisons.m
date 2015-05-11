@@ -19,6 +19,9 @@ function [W_oo] = pairwise_comparisons(alpha,beta,idx_oo,P)
     W = W*2-ones(n); W(logical(eye(n))) = 0;
     % entries we do not see should be zero
     W(~mask_1) = 0;
+    % enforce consistency
+    W = triu(W,1);
+    W = W-W';
     % permute entries to match the order of the permuted images
     W_oo = W(idx_oo,idx_oo);
 
