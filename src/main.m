@@ -54,7 +54,8 @@ y_pos = diff_map(:,2);
 % title('Diffusion map embedding in \bf{R}^2','Interpreter','tex');
 
 % check sort quality
-figure(3);
+h = figure(3);
+set(h,'name','Diffusion map ranking','numbertitle','off');
 [x_sorted, ord_x] = sort(x_pos);
 scatter(1:range,ord_x);
 title('Quality of ranking');
@@ -63,9 +64,11 @@ ylabel('True image rank');
 metrics(1,:) = rank_metrics(ord_x,n);
 
 %%% 2. ranking + pairwise comparisons
-figure(4);
+h = figure(4);
+set(h,'name','Ranking + pairwise comparisons','numbertitle','off');
+%these are multicolored
 [t2,D2] = get_ranking_base(W,T,0.01);
-[~, ord_t2] = sort(t2); hold on;
+[~, ord_t2] = sort(t2); 
 scatter(1:range,ord_t2);
 title('Quality of ranking');
 xlabel('dm+pairwise map rank');
@@ -73,25 +76,28 @@ ylabel('True image rank');
 metrics(2,:) = rank_metrics(ord_t2,n);
 
 %%% 3. ranking + pairwise comparisons + time stamps
-figure(5);
+h = figure(5);
+set(h,'name',' Ranking + pairwise compoarisons + time stamps','numbertitle','off');
 t_hat = 1:range;
 t_hat = t_hat' - mean(t_hat);
 sigma = 1;
 t_hat = t_hat + sigma*normrnd(0,1,range,1);
 gamma = 1;
 [t3,D3] = get_ranking_base_time(W,T,t_hat,0.01,1);
-[~, ord_t3] = sort(t3); hold on;
-scatter(ord_t3,1:range);
+[~, ord_t3] = sort(t3);
+%these are multicolored
+scatter(1:range,ord_t3);
 title('Quality of ranking');
 xlabel('dm+pairwise+time rank');
 ylabel('True image rank');
 metrics(3,:) = rank_metrics(ord_t3,n);
 
 %%% 4. binary ranking method - formulate as linear program
-figure(6);
+h = figure(6);
+set(h,'name','Binary ranking method','numbertitle','off');
 Tb = T; Tb(Tb<0) = 0; 
 [res,ord_b] = get_ranking_binary(W,Tb,1);
-scatter(ord_b,1:range);
+scatter(1:range,ord_b);
 title('Quality of ranking');
 xlabel('binary rank');
 ylabel('True image rank');
