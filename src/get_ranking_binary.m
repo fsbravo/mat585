@@ -72,5 +72,6 @@ function [sol,order] = get_ranking_binary(W,T,lambda)
     gt = sol>=0.5;  % 1 if j>i
     csums = sum(gt,1);
     [~,order] = sort(csums);
+    order = order';
     
 end
