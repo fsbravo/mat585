@@ -54,4 +54,35 @@ for i=1:range
     end
 end
 
+%%% preprocess images
+
+switch set_name
+    case 'drosophila_fixed' 
+        if (indicator_rgb ~= 1)
+            error('cant preprocess grayscale drosophila images')
+        end
+        channel_weight = [0.5 1 1];
+        channel_blur = [0.05 0.05 0.05];
+        channel_normalize = [1 0 0];
+        channel_mean_center = [1 0 0];
+        resize_image = true;
+    case 'drosophila_live'
+        channel_weight = 1;
+        channel_blur = 0.05;
+        channel_normalize = 1;
+        channel_mean_center = 0;
+        resize_image = false;
+    case 'zebrafish'
+        npixels = 100;
+        channel_weight = 1;
+        channel_blur = 0;
+        channel_normalize = 0;
+        channel_mean_center = 1;
+        resize_image = false;
+    otherwise
+        error('No such data set! Use drosophila_fixed, drosophila_live, or zebrafish');
+end
+image_matrix = apply_image_functions(image_matrix, 100, 2, channel_weight, ...
+    channel_blur, channel_normalize, channel_mean_center, resize_image);
+
 end
