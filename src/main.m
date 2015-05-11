@@ -19,6 +19,10 @@ clear img;
 %%% number of images, should equal range
 n = range; 
 
+%%% create matrix of errros
+metrics = zeros(4,4); %number of experiments \times number of metrics
+
+%%% matrix 
 %%% permute images
 P = eye(n); P = P(randperm(n),:);
 idx = 1:n;
@@ -56,7 +60,7 @@ scatter(1:range,ord_x);
 title('Quality of ranking');
 xlabel('Diffusion map rank');
 ylabel('True image rank');
-sum(abs(ord_x-[1:range]'))
+metrics(1,:) = rank_metrics(ord_x,n);
 
 %%% 2. ranking + pairwise comparisons
 figure(4);
@@ -66,7 +70,7 @@ scatter(1:range,ord_t2);
 title('Quality of ranking');
 xlabel('dm+pairwise map rank');
 ylabel('True image rank');
-sum(abs(ord_t2-[1:range]'))
+metrics(2,:) = rank_metrics(ord_t2,n);
 
 %%% 3. ranking + pairwise comparisons + time stamps
 figure(5);
@@ -81,7 +85,7 @@ scatter(ord_t3,1:range);
 title('Quality of ranking');
 xlabel('dm+pairwise+time rank');
 ylabel('True image rank');
-sum(abs(ord_t3-[1:range]'))
+metrics(3,:) = rank_metrics(ord_t3,n);
 
 %%% 4. binary ranking method - formulate as linear program
 figure(6);
@@ -91,7 +95,7 @@ scatter(ord_b,1:range);
 title('Quality of ranking');
 xlabel('binary rank');
 ylabel('True image rank');
-sum(abs(ord_b-[1:range]))
+metrics(4,:) = rank_metrics(ord_b,n);
 
 %%% 5. doubly stochastic relaxation
 
