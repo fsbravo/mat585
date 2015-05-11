@@ -16,7 +16,8 @@ SSresid = sum(yresid.^2);
 SStotal = (length(calc_rank)-1) * var(calc_rank);
 rsq = 1 - SSresid/SStotal;
 
+r= sqrt(rsq);
 
-errors = [abs_diff, square_diff, max_diff, rsq];
+errors = [abs_diff, square_diff, max_diff, r];
 end
 

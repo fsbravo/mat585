@@ -1,4 +1,4 @@
-function [image_matrix, nchannels] = image_reader(set_name,range,varargin)
+function [image_mat, nchannels] = image_reader(set_name,range,varargin)
 % image_reader.m
 % parse tif images from one of the three datasets.
 % INPUT:
@@ -73,7 +73,6 @@ switch set_name
         channel_mean_center = 0;
         resize_image = false;
     case 'zebrafish'
-        npixels = 100;
         channel_weight = 1;
         channel_blur = 0;
         channel_normalize = 0;
@@ -82,7 +81,6 @@ switch set_name
     otherwise
         error('No such data set! Use drosophila_fixed, drosophila_live, or zebrafish');
 end
-image_matrix = apply_image_functions(image_matrix, 100, 2, channel_weight, ...
+image_mat = apply_image_functions(image_matrix, 100, 2, channel_weight, ...
     channel_blur, channel_normalize, channel_mean_center, resize_image);
-
 end
