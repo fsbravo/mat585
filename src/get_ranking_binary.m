@@ -22,16 +22,28 @@ function [sol,order] = get_ranking_binary(W,T,lambda)
     % 1<=t(i,j)+t(j,k)+t(k,i)<=2 :: n^3 constraints
 %     n_cons = n*(n-1)/2*;
 %     A2 = zeros(n_cons,n_var);
+    n_cons = 0;
+    for i=1:n
+        for j=i+1:n
+            n_cons = n_cons + n-j;
+        end
+    end
+    A2 = spalloc(n_cons,n_var,3*n_cons);
     l = 1;
     for i=1:n
         for j=i+1:n
             for k=j+1:n
-            temp = sparse([i j k],[j k i],[1 1 1],n,n);
-            A2(l,:) = [temp(:)' zeros(1,n_var-n^2)];
-            l = l+1;
+                A2(l,(i-1)*n+j) = 1;
+                A2(l,(j-1)*n+k) = 1;
+                A2(l,(k-1)*n+i) = 1;
+%                 temp = sparse([i j k],[j k i],[1 1 1],n,n);
+%                 A2(l,:) = [temp(:)' zeros(1,n_var-n^2)];
+                l = l+1;
             end
         end
     end
+    fprintf('n_cons = %d\n',size(A2,1));
+    fprintf('n_cons = %d\n',n_cons);
     blc2 = ones(size(A2,1),1); buc2 = 2*ones(size(A2,1),1);
     % tau(+)_ij-tau(-)_ij-t_ij=-t(hat)_ij :: sames as number of edges
     l = 1;
