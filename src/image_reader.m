@@ -1,4 +1,4 @@
-function [image_matrix, nchannels] = image_reader(set_name,range)
+function [image_matrix, nchannels] = image_reader(set_name,range,varargin)
 % image_reader.m
 % parse tif images from one of the three datasets.
 % INPUT:
@@ -16,7 +16,12 @@ function [image_matrix, nchannels] = image_reader(set_name,range)
 %  For TIFF files containing color images that use the RGB color space,
 %  A is an M-by-N-by-4 array. 
 
-indicator_rgb = 0; %for drosophila_fixed, 0 for grayscale, 1 for RGB
+if ~isempty(varargin)
+    indicator_rgb = varargin{1};
+else
+    indicator_rgb = 0;
+end
+% indicator_rgb = 0; %for drosophila_fixed, 0 for grayscale, 1 for RGB
 nchannels = 1; %grayscale
 
 switch set_name
@@ -31,7 +36,7 @@ switch set_name
     case 'zebrafish'
         path = '../images/zebrafish/';
     otherwise
-        error('No such data set! Use drosophilia_fixed, drosophilia_live, or zebrafish');
+        error('No such data set! Use drosophila_fixed, drosophila_live, or zebrafish');
 end
 %We need to know the dimensions of the images a priori to preallocate
 image_matrix = zeros(100,100,nchannels,range);
