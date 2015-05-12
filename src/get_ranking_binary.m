@@ -1,4 +1,4 @@
-function [sol,order] = get_ranking_binary(W,T)
+function [sol,order] = get_ranking_binary(T)
     n = size(W,1);
     T(T<0) = 0;
     

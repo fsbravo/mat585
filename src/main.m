@@ -112,7 +112,7 @@ for i=1:NALPHA
             %%% 4. binary ranking method - formulate as linear program
 
             Tb = T; Tb(Tb<0) = 0; 
-            [res,ord_b] = get_ranking_binary(W,Tb,1);
+            [res,ord_b] = get_ranking_binary(Tb);
             metrics(4,:,k) = rank_metrics(ord_b,n);
             if (PLOT_SWITCH)
                 h = figure(6);
