@@ -15,7 +15,7 @@ beta    = 1.00;       % probability of correct pairwise comparisons
 NEXPERIMENTS = 2;
 
 %%% get images
-range = 120;
+range = 50;
 [imgs, nchannels] = image_reader('zebrafish',range);
 %%% convert the uint8 pixels to doubles
 imgs = double(imgs);
