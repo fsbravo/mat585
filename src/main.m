@@ -103,10 +103,10 @@ for i=1:NALPHA
             %%% 3. ranking + pairwise comparisons + time stamps
             t_hat = 1:range;
             t_hat = t_hat' - mean(t_hat);
-            sigma = 1;
+            sigma = 5;
             t_hat = t_hat + sigma*normrnd(0,1,range,1);
             gamma = 1;
-            [t3,D3] = get_ranking_base_time(W,T,t_hat,0.01,1);
+            [t3,D3] = get_ranking_base_time(W,T,t_hat,0.1,0.1);
             [~, ord_t3] = sort(t3);
             metrics(3,:,k,i,j) = rank_metrics(ord_t3,n);
             if (PLOT_SWITCH)
