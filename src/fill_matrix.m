@@ -3,7 +3,8 @@ function [ T_complete ] = fill_matrix( T, W )
 % and uses pairwise affinities to extract information about global ordering
 n = size(W,1); 
 
-%T is the matrix of sparse pairwise comparisons, T_ij =1 if i > j -1 if j<i
+%T is the matrix of sparse pairwise comparisons, T_ij =1 if j > i -1 if i >
+%j
 [I,J,V ] = find(T); 
 s = nnz(T); %should be equal to size of V
 
@@ -21,72 +22,72 @@ for l=1:s
             if k == j
                 T_complete(i,k) = 1;            
             else
-               if (W(i,j)> W(i,k) && W(i,k) > W(j,k))
+               if (W(i,j)> W(i,k) && W(i,k) > W(j,k)) % k i j - good
                    if T_complete(i,k) == 1
                       T_complete(i,k) = -42;
                    else
-                      T_complete(i,k) =-1;
-                   end
-                   if T_complete(j,k) == -1
-                      T_complete(j,k) = -42;
-                   else
-                      T_complete(j,k) =1;
-                   end
-               elseif (W(i,j)> W(j,k) && W(j,k) > W(i,k))
-                   if T_complete(i,k) == 1
-                      T_complete(i,k) = -42;
-                   else
-                      T_complete(i,k) =-1;
-                   end
-                   if T_complete(j,k) == -1
-                      T_complete(j,k) = -42;
-                   else
-                      T_complete(j,k) =1;
-                   end
-               elseif (W(j,k)> W(i,k) && W(i,k) > W(i,j))
-                   if T_complete(i,k) == -1
-                      T_complete(i,k) = -42;
-                   else
-                      T_complete(i,k) =1;
-                   end
-                   if T_complete(j,k) == -1
-                      T_complete(j,k) = -42;
-                   else
-                      T_complete(j,k) = 1;
-                   end
-               elseif (W(j,k)> W(i,j) && W(i,j) > W(i,k))
-                   if T_complete(i,k) == -1
-                      T_complete(i,k) = -42;
-                   else
-                      T_complete(i,k) =1;
-                   end
-                   if T_complete(j,k) == -1
-                      T_complete(j,k) = -42;
-                   else
-                      T_complete(j,k) = 1;
-                   end             
-               elseif (W(i,k)> W(i,j) && W(i,j) > W(j,k))
-                   if T_complete(i,k) == 1
-                      T_complete(i,k) = -42;
-                   else
-                      T_complete(i,k) =-1;
+                      T_complete(i,k) = -1;
                    end
                    if T_complete(j,k) == 1
                       T_complete(j,k) = -42;
                    else
                       T_complete(j,k) = -1;
                    end
-               elseif (W(i,k)> W(j,k) && W(j,k) > W(i,j))
-                   if T_complete(i,k) == 1
+               elseif (W(i,j)> W(j,k) && W(j,k) > W(i,k)) % i j k - good
+                   if T_complete(i,k) == -1
                       T_complete(i,k) = -42;
                    else
-                      T_complete(i,k) =-1;
+                      T_complete(i,k) = 1;
+                   end
+                   if T_complete(j,k) == -1
+                      T_complete(j,k) = -42;
+                   else
+                      T_complete(j,k) = 1;
+                   end
+               elseif (W(j,k)> W(i,k) && W(i,k) > W(i,j)) % i k j - good
+                   if T_complete(i,k) == -1
+                      T_complete(i,k) = -42;
+                   else
+                      T_complete(i,k) = 1;
                    end
                    if T_complete(j,k) == 1
                       T_complete(j,k) = -42;
                    else
                       T_complete(j,k) = -1;
-                   end                                                      
+                   end
+%                elseif (W(j,k)> W(i,j) && W(i,j) > W(i,k)) % i j k - good
+%                    if T_complete(i,k) == -1
+%                       T_complete(i,k) = -42;
+%                    else
+%                       T_complete(i,k) = 1;
+%                    end
+%                    if T_complete(j,k) == -1
+%                       T_complete(j,k) = -42;
+%                    else
+%                       T_complete(j,k) = 1;
+%                    end             
+%                elseif (W(i,k)> W(i,j) && W(i,j) > W(j,k)) % k i j - good
+%                    if T_complete(i,k) == 1
+%                       T_complete(i,k) = -42;
+%                    else
+%                       T_complete(i,k) = -1;
+%                    end
+%                    if T_complete(j,k) == 1
+%                       T_complete(j,k) = -42;
+%                    else
+%                       T_complete(j,k) = -1;
+%                    end
+%                elseif (W(i,k)> W(j,k) && W(j,k) > W(i,j)) % i k j - good
+%                    if T_complete(i,k) == -1
+%                       T_complete(i,k) = -42;
+%                    else
+%                       T_complete(i,k) = 1;
+%                    end
+%                    if T_complete(j,k) == 1
+%                       T_complete(j,k) = -42;
+%                    else
+%                       T_complete(j,k) = -1;
+%                    end                                                      
                end    
             end
         end
@@ -95,76 +96,84 @@ for l=1:s
             if k == i
                 T_complete(k,j) = 1;            
             else             
-               if (W(i,j)> W(i,k) && W(i,k) > W(j,k))
-                   if T_complete(k,i) == 1
+               if (W(i,j)> W(i,k) && W(i,k) > W(j,k)) % k i j - good
+                   if T_complete(k,i) == -1
                       T_complete(k,i) = -42;
                    else
-                      T_complete(k,i) =-1;
+                      T_complete(k,i) = 1;
                    end
                    if T_complete(k,j) == -1
                       T_complete(k,j) = -42;
                    else
-                      T_complete(k,j) =1;
+                      T_complete(k,j) = 1;
                    end                    
-               elseif (W(i,j)> W(j,k) && W(j,k) > W(i,k))
+               elseif (W(i,j)> W(j,k) && W(j,k) > W(i,k)) % i j k - good
                    if T_complete(k,i) == 1
                       T_complete(k,i) = -42;
                    else
                       T_complete(k,i) =-1;
                    end
-                   if T_complete(k,j) == -1
+                   if T_complete(k,j) == 1
                       T_complete(k,j) = -42;
                    else
-                      T_complete(k,j) =1;
+                      T_complete(k,j) = -1;
                    end
-               elseif (W(j,k)> W(i,k) && W(i,k) > W(i,j))
-                   if T_complete(k,i) == -1
-                      T_complete(k,i) = -42;
-                   else
-                      T_complete(k,i) = 1;
-                   end
-                   if T_complete(k,j) == -1
-                      T_complete(k,j) = -42;
-                   else
-                      T_complete(k,j) =1;
-                   end
-               elseif (W(j,k)> W(i,j) && W(i,j) > W(i,k))
-                   if T_complete(k,i) == -1
-                      T_complete(k,i) = -42;
-                   else
-                      T_complete(k,i) = 1;
-                   end
-                   if T_complete(k,j) == -1
-                      T_complete(k,j) = -42;
-                   else
-                      T_complete(k,j) =1;
-                   end              
-               elseif (W(i,k)> W(i,j) && W(i,j) > W(j,k))
+               elseif (W(j,k)> W(i,k) && W(i,k) > W(i,j)) % i k j - good
                    if T_complete(k,i) == 1
                       T_complete(k,i) = -42;
                    else
                       T_complete(k,i) = -1;
                    end
-                   if T_complete(k,j) == 1
+                   if T_complete(k,j) == -1
                       T_complete(k,j) = -42;
                    else
-                      T_complete(k,j) =- 1;
+                      T_complete(k,j) = 1;
                    end
-               elseif (W(i,k)> W(j,k) && W(j,k) > W(i,j))
-                   if T_complete(k,i) == 1
-                      T_complete(k,i) = -42;
-                   else
-                      T_complete(k,i) = -1;
-                   end
-                   if T_complete(k,j) == 1
-                      T_complete(k,j) = -42;
-                   else
-                      T_complete(k,j) =- 1;
-                   end                                                     
+%                elseif (W(j,k)> W(i,j) && W(i,j) > W(i,k)) % i j k - good
+%                    if T_complete(k,i) == 1
+%                       T_complete(k,i) = -42;
+%                    else
+%                       T_complete(k,i) = -1;
+%                    end
+%                    if T_complete(k,j) == 1
+%                       T_complete(k,j) = -42;
+%                    else
+%                       T_complete(k,j) = -1;
+%                    end              
+%                elseif (W(i,k)> W(i,j) && W(i,j) > W(j,k)) % k i j - good
+%                    if T_complete(k,i) == -1
+%                       T_complete(k,i) = -42;
+%                    else
+%                       T_complete(k,i) = 1;
+%                    end
+%                    if T_complete(k,j) == -1
+%                       T_complete(k,j) = -42;
+%                    else
+%                       T_complete(k,j) = 1;
+%                    end
+%                elseif (W(i,k)> W(j,k) && W(j,k) > W(i,j)) % 
+%                    if T_complete(k,i) == 1
+%                       T_complete(k,i) = -42;
+%                    else
+%                       T_complete(k,i) = -1;
+%                    end
+%                    if T_complete(k,j) == -1
+%                       T_complete(k,j) = -42;
+%                    else
+%                       T_complete(k,j) = 1;
+%                    end                                                     
                end    
             end
         end
     end   
+end
+
+T_complete(T_complete==-42) = 0;
+check = T_complete+T_complete';
+[ii,jj,~] = find(check);
+for idx=1:length(ii)
+    T_complete(ii(idx),jj(idx)) = 0;
+    T_complete(jj(idx),ii(idx)) = 0;
 end
 
 end
