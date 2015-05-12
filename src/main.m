@@ -4,19 +4,19 @@ clc;
 PLOT_SWITCH = 0;
 
 %For testing a range of sampling ratios
-NALPHA = 5;
+NALPHA = 1;
 NBETA = 3;
 %%% Set actual parameters/ranges here as vectors
-alpha   = [0.04 0.08 0.12 0.16 0.20];       % fraction of pairwise comparisons
+alpha   = [0.16];       % fraction of pairwise comparisons
 beta    = [0.95 0.98 1.00];       % probability of correct pairwise comparisons
 
 %Pairwise comparisons are randomly sampled. 
 %Should run multiple random experiments and average results 
-NEXPERIMENTS = 10;
+NEXPERIMENTS = 5;
 
 %%% get images
 range = 120;
-[imgs, nchannels] = image_reader('zebrafish',range);
+[imgs, nchannels] = image_reader('drosophila_fixed',range,1);
 %%% convert the uint8 pixels to doubles
 imgs = double(imgs);
 imgs_mat = zeros(size(imgs,1)*size(imgs,2)*nchannels,range);
